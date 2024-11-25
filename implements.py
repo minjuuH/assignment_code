@@ -79,8 +79,12 @@ class Ball(Basic):
         # TODO: Implement a service that bounces off when the ball hits the wall
         pass
         # 좌우 벽 충돌
+        if self.rect.centerx < 0 or self.rect.centerx > 600:    #config.py display_dimension 값 참조하여 600으로 범위 지정
+            self.dir = 180 - self.dir
         
         # 상단 벽 충돌
+        elif self.rect.centery < 0:
+            self.dir = -self.dir
     
     def alive(self):
         # ============================================
