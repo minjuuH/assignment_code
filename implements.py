@@ -36,6 +36,8 @@ class Block(Basic):
     def collide(self):
         # ============================================
         # TODO: Implement an event when block collides with a ball
+        self.rect.centerx = -self.rect.centerx  #블록 삭제
+        self.alive = False
         pass
 
 
@@ -68,6 +70,16 @@ class Ball(Basic):
     def collide_block(self, blocks: list):
         # ============================================
         # TODO: Implement an event when the ball hits a block
+        for block in blocks:
+            if self.rect.colliderect(block.rect):
+                block.collide()
+            
+                #블록 가로면에 대한 충돌 계산
+                if -block.rect.left > self.rect.centerx > -block.rect.right:
+                    self.dir *= -1
+                #블록 세로면에 대한 충돌 계산
+                else:
+                    self.dir = 180-self.dir
         pass
 
     def collide_paddle(self, paddle: Paddle) -> None:
@@ -77,12 +89,19 @@ class Ball(Basic):
     def hit_wall(self):
         # ============================================
         # TODO: Implement a service that bounces off when the ball hits the wall
-        pass
         # 좌우 벽 충돌
+        if self.rect.centerx < 0 or self.rect.centerx > 600:    #config.py display_dimension 값 참조하여 600으로 범위 지정
+            self.dir = 180 - self.dir
         
         # 상단 벽 충돌
+        elif self.rect.centery < 0:
+            self.dir = -self.dir
     
     def alive(self):
         # ============================================
         # TODO: Implement a service that returns whether the ball is alive or not
+        if self.rect.centery > 800:     #공의 위치가 display y값보다 커질 경우 false 반환
+            return False
+        else:
+            return True
         pass
