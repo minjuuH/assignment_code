@@ -36,6 +36,8 @@ class Block(Basic):
     def collide(self):
         # ============================================
         # TODO: Implement an event when block collides with a ball
+        self.rect.centerx = -self.rect.centerx  #블록 삭제
+        self.alive = False
         pass
 
 
