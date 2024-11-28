@@ -89,4 +89,8 @@ class Ball(Basic):
     def alive(self):
         # ============================================
         # TODO: Implement a service that returns whether the ball is alive or not
+        if self.rect.centery > 800:     #공의 위치가 display y값보다 커질 경우 false 반환
+            return False
+        else:
+            return True
         pass
