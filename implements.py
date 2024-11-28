@@ -68,6 +68,16 @@ class Ball(Basic):
     def collide_block(self, blocks: list):
         # ============================================
         # TODO: Implement an event when the ball hits a block
+        for block in blocks:
+            if self.rect.colliderect(block.rect):
+                block.collide()
+            
+                #블록 가로면에 대한 충돌 계산
+                if -block.rect.left > self.rect.centerx > -block.rect.right:
+                    self.dir *= -1
+                #블록 세로면에 대한 충돌 계산
+                else:
+                    self.dir = 180-self.dir
         pass
 
     def collide_paddle(self, paddle: Paddle) -> None:
@@ -77,7 +87,6 @@ class Ball(Basic):
     def hit_wall(self):
         # ============================================
         # TODO: Implement a service that bounces off when the ball hits the wall
-        pass
         # 좌우 벽 충돌
         if self.rect.centerx < 0 or self.rect.centerx > 600:    #config.py display_dimension 값 참조하여 600으로 범위 지정
             self.dir = 180 - self.dir
