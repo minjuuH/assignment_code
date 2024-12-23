@@ -1,10 +1,8 @@
 import sys
-from implements import Basic, Block, Paddle, Ball
+from implements import Basic, Block, Paddle, Ball, Item
 import config
-
 import pygame
 from pygame.locals import QUIT, Rect, K_ESCAPE, K_SPACE
-
 
 pygame.init()
 pygame.key.set_repeat(3, 3)
@@ -56,6 +54,20 @@ def tick():
                 start = True
             paddle.move_paddle(event)
 
+    # Check if an item is collected
+    for item in ITEMS[:]:
+        item_type = item.collide(paddle)
+        if item_type == "blue":
+            # Triple the balls when blue ball item is collected
+            for ball in BALLS:
+                new_ball1 = Ball(ball.rect.center)
+                new_ball2 = Ball(ball.rect.center)
+                new_ball1.dir = random.randint(0, 360)
+                new_ball2.dir = random.randint(0, 360)
+                BALLS.extend([new_ball1, new_ball2])
+        if not item.alive:
+            ITEMS.remove(item)
+
     for ball in BALLS:
         if start:
             ball.move()
@@ -66,7 +78,7 @@ def tick():
         ball.collide_block(BLOCKS)
         ball.collide_paddle(paddle)
         ball.hit_wall()
-        if ball.alive() == False:
+        if not ball.alive():
             BALLS.remove(ball)
 
 
