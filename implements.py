@@ -128,4 +128,10 @@ class BallItem(Ball):   #Ball을 상속받은 아이템 클래스
     def collide_paddle(self, paddle: Paddle, balls: list) -> None:
         # 아이템이 패들과 부딪힐 경우 삭제되도록 설정
         if self.rect.colliderect(paddle.rect):
+            if self.color == (0, 0, 255):       #파란색일 경우
+                for i in range(2):              #화면에 공이 이미 1개 있으므로 2개를 추가로 생성
+                    new_ball = Ball(pos=balls[0].center)    #공이 있는 자리에 새로운 공 객체 생성
+                    balls.append(new_ball)  #ball 리스트에 새 공 추가
+                    new_ball.move
+
             balls.remove(self)
