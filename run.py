@@ -28,10 +28,12 @@ def create_blocks():
                 + config.scoreboard_height
                 + j * (config.block_size[1] + config.spacing[1])
             )
+            # Assigning colors from the updated list in config.py
             color_index = j % len(config.colors)
             color = config.colors[color_index]
             block = Block(color, (x, y))
             BLOCKS.append(block)
+
 
 
 def tick():
@@ -47,10 +49,10 @@ def tick():
             pygame.quit()
             sys.exit()
         elif event.type == pygame.KEYDOWN:
-            if event.key == K_ESCAPE:  # ESC 키가 눌렸을 때
+            if event.key == K_ESCAPE:
                 pygame.quit()
                 sys.exit()
-            if event.key == K_SPACE:  # space키가 눌려지만 start 변수가 True로 바뀌며 게임 시작
+            if event.key == K_SPACE:
                 start = True
             paddle.move_paddle(event)
 
@@ -75,12 +77,11 @@ def tick():
             ball.rect.centerx = paddle.rect.centerx
             ball.rect.bottom = paddle.rect.top
 
-        ball.collide_block(BLOCKS)
+        ball.collide_block(BLOCKS, ITEMS)  # Pass the ITEMS list here
         ball.collide_paddle(paddle)
         ball.hit_wall()
         if not ball.alive():
             BALLS.remove(ball)
-
 
 def main():
     global life

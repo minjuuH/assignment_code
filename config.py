@@ -23,6 +23,17 @@ paddle_pos = (center_x, display_dimension[1] - 100)
 paddle_size = (100, 30)
 paddle_speed = 5
 
+# Colors for blocks (and potentially for items)
+colors = [(255, 0, 0), (255, 165, 0), (255, 255, 0), (169, 169, 169)]  # Red, Orange, Yellow, Gray (new gray wall block)
+collision_limit = len(colors) - 1
+
+# Setting for blocks (adjust block hit sequence)
+block_hit_sequence = {
+    (255, 0, 0): (255, 165, 0),  # Red -> Orange
+    (255, 165, 0): (255, 255, 0),  # Orange -> Yellow
+    (255, 255, 0): None,  # Yellow -> Block destroyed
+}
+
 # Setting for ball
 ball_color = (242, 242, 0)
 ball_speed = display_dimension[1] / 80

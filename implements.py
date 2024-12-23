@@ -27,22 +27,27 @@ class Block(Basic):
         super().__init__(color, 0, pos, config.block_size)
         self.pos = pos
         self.alive = alive
+        self.hit_count = 0  # Track the number of hits
 
     def draw(self, surface) -> None:
         pygame.draw.rect(surface, self.color, self.rect)
 
     def collide(self, items: list):
-        self.rect.centerx = -self.rect.centerx  # Mark the block as destroyed
-        self.alive = False
-        
-        # 20% chance to drop an item
-        if random.random() < 0.2:  # 20% chance
-            item_color = random.choice([config.add_score_color, config.paddle_long_color])  # Red or Blue
-            item_pos = self.rect.center
-            item = Item(item_color, item_pos)
-            items.append(item)  # Add the item to the items list
-
-
+        self.hit_count += 1
+        if self.hit_count == 1:  # First hit, change to orange
+            self.color = config.block_hit_sequence.get(self.color, self.color)
+        elif self.hit_count == 2:  # Second hit, change to yellow
+            self.color = config.block_hit_sequence.get(self.color, self.color)
+        elif self.hit_count >= 3:  # Block is destroyed after 3 hits
+            self.alive = False
+            self.rect.centerx = -self.rect.centerx  # Mark the block as destroyed
+            
+            # 20% chance to drop an item
+            if random.random() < 0.2:  # 20% chance
+                item_color = random.choice([config.add_score_color, config.paddle_long_color])  # Red or Blue
+                item_pos = self.rect.center
+                item = Item(item_color, item_pos)
+                items.append(item)  # Add the item to the items list
 
 
 class Paddle(Basic):
